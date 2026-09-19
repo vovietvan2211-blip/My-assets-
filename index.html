@@ -1,0 +1,710 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mở Rương - Trò Chơi Mở Rương</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700;800&family=Playfair+Display:ital,wght@0,600;0,800;1,600&family=Special+Elite&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --parchment-bg: #f4e4bc;
+            --parchment-dark: #e2cb93;
+            --bronze-gold: #c59b27;
+            --bronze-dark: #8c6211;
+            --navy-dark: #101c2e;
+            --wine-red: #7a1c1c;
+            --ink-black: #2b2118;
+        }
+
+        body {
+            font-family: 'Be Vietnam Pro', sans-serif;
+            background-color: #0d131a;
+            color: var(--ink-black);
+            background-image: 
+                radial-gradient(circle at 50% 50%, rgba(20, 28, 40, 0.75), rgba(5, 8, 12, 0.95)),
+                url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%23223042' fill-opacity='0.2' fill-rule='evenodd'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/svg%3E");
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        .font-serif-title { font-family: 'Playfair Display', serif; }
+        .font-steampunk { font-family: 'Special Elite', cursive, serif; }
+
+        .parchment-card {
+            background: linear-gradient(135deg, #fceecb 0%, #e8d098 50%, #d8b877 100%);
+            border: 12px solid #5a3f1b;
+            border-image: linear-gradient(to bottom right, #8c6211, #3a270d, #b8860b, #5a3f1b) 1;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.8), inset 0 0 50px rgba(90, 63, 27, 0.4);
+            position: relative;
+        }
+
+        .parchment-card::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: url("data:image/svg+xml,%3Csvg width='100' height='100' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.04' numOctaves='3' result='noise'/%3E%3CfeColorMatrix type='matrix' values='1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 0.07 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+            pointer-events: none;
+            opacity: 0.7;
+        }
+
+        .map-overlay-bg {
+            background-image: url("data:image/svg+xml,%3Csvg width='400' height='400' viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%238c6211' fill-opacity='0.08'%3E%3Ccircle cx='200' cy='200' r='180' stroke='%238c6211' stroke-width='2' fill='none'/%3E%3Ccircle cx='200' cy='200' r='140' stroke='%238c6211' stroke-width='1' fill='none' stroke-dasharray='5,5'/%3E%3Cpath d='M200 10 L215 185 L390 200 L215 215 L200 390 L185 215 L10 200 L185 185 Z'/%3E%3C/g%3E%3C/svg%3E");
+            background-position: center;
+            background-repeat: no-repeat;
+            background-size: contain;
+        }
+
+        .btn-steampunk {
+            background: linear-gradient(180deg, #d4af37 0%, #a67c1e 50%, #704f0d 100%);
+            border: 2px solid #f3e5ab;
+            color: #1a0f00;
+            text-shadow: 0 1px 0 rgba(255,255,255,0.4);
+            box-shadow: 0 4px 10px rgba(0,0,0,0.5), inset 0 1px 2px rgba(255,255,255,0.6);
+            transition: all 0.2s ease;
+        }
+
+        .btn-steampunk:hover:not(:disabled) {
+            transform: translateY(-2px);
+            filter: brightness(1.1);
+            box-shadow: 0 6px 15px rgba(212, 175, 55, 0.4), inset 0 1px 2px rgba(255,255,255,0.8);
+        }
+
+        .chest-card {
+            background: linear-gradient(145deg, #4a3011, #2b1a08);
+            border: 3px solid #b8860b;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.6), inset 0 0 10px rgba(0,0,0,0.8);
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            min-height: 125px;
+        }
+
+        .chest-card:hover:not(.opened):not(.failed) {
+            transform: translateY(-5px) scale(1.04);
+            border-color: #ffd700;
+            box-shadow: 0 12px 25px rgba(212, 175, 55, 0.4), inset 0 0 15px rgba(212, 175, 55, 0.2);
+        }
+
+        .chest-card.opened {
+            background: linear-gradient(145deg, #1b3d22, #0d2112);
+            border-color: #4ade80;
+        }
+
+        .wheel-pointer {
+            width: 0; height: 0;
+            border-left: 18px solid transparent;
+            border-right: 18px solid transparent;
+            border-top: 36px solid #dc2626;
+            filter: drop-shadow(0 3px 5px rgba(0,0,0,0.5));
+        }
+
+        .coin-particle {
+            position: absolute;
+            top: -20px;
+            pointer-events: none;
+            animation: fall linear forwards;
+        }
+
+        @keyframes fall {
+            to { transform: translateY(100vh) rotate(720deg); opacity: 0; }
+        }
+
+        .team-btn-active {
+            background: linear-gradient(180deg, #d4af37 0%, #a67c1e 100%) !important;
+            color: #1a0f00 !important;
+            border-color: #fff !important;
+            font-weight: 800 !important;
+            box-shadow: 0 0 12px rgba(212, 175, 55, 0.9) !important;
+        }
+    </style>
+</head>
+<body class="flex flex-col min-h-screen justify-between relative selection:bg-amber-700 selection:text-white">
+
+    <audio id="bgm-map" loop src="bgm_map.mp3"></audio>
+
+    <!-- HEADER / BẢNG ĐIỂM -->
+    <header class="bg-slate-900/95 border-b-2 border-amber-600/50 backdrop-blur px-4 py-3 sticky top-0 z-50 shadow-xl">
+        <div class="max-w-7xl mx-auto flex flex-wrap justify-between items-center gap-3">
+            
+            <div class="flex items-center gap-3">
+                <svg class="w-8 h-8 text-amber-500 animate-pulse" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7"></path>
+                </svg>
+                <span class="font-serif-title font-bold text-lg md:text-2xl text-amber-200 uppercase tracking-wide">MỞ RƯƠNG</span>
+            </div>
+
+            <!-- ĐIỂM SỐ 3 NHÓM -->
+            <div class="flex items-center gap-3 md:gap-6">
+                <div class="bg-amber-950/90 border-2 border-amber-500/50 px-4 py-1.5 rounded-xl text-center shadow">
+                    <span class="text-xs text-amber-400 block font-bold uppercase tracking-wider">NHÓM 1</span>
+                    <span id="score-team-1" class="font-mono font-bold text-lg md:text-xl text-amber-300">0000</span>
+                </div>
+                <div class="bg-amber-950/90 border-2 border-amber-500/50 px-4 py-1.5 rounded-xl text-center shadow">
+                    <span class="text-xs text-amber-400 block font-bold uppercase tracking-wider">NHÓM 2</span>
+                    <span id="score-team-2" class="font-mono font-bold text-lg md:text-xl text-amber-300">0000</span>
+                </div>
+                <div class="bg-amber-950/90 border-2 border-amber-500/50 px-4 py-1.5 rounded-xl text-center shadow">
+                    <span class="text-xs text-amber-400 block font-bold uppercase tracking-wider">NHÓM 3</span>
+                    <span id="score-team-3" class="font-mono font-bold text-lg md:text-xl text-amber-300">0000</span>
+                </div>
+
+                <button id="btn-sound-toggle" onclick="toggleSound()" class="p-2 rounded-xl bg-slate-800 border-2 border-amber-600/50 text-amber-400 hover:bg-slate-700">
+                    <svg id="icon-sound-on" class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.536 8.464a5 5 0 010 7.072M18.364 5.636a9 9 0 010 12.728M11 5L6 9H2v6h4l5 4V5z"></path></svg>
+                    <svg id="icon-sound-off" class="w-6 h-6 hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2"></path></svg>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- MAIN CONTENT -->
+    <main class="flex-grow container mx-auto px-4 py-6 flex justify-center items-center relative z-10">
+
+        <!-- 1. MAP / MAIN MENU -->
+        <section id="screen-map" class="w-full max-w-7xl parchment-card rounded-3xl p-6 md:p-8 map-overlay-bg relative">
+            
+            <div class="text-center mb-5">
+                <!-- ĐÃ ĐỔI THÀNH MỞ RƯƠNG -->
+                <h1 class="font-serif-title font-black text-3xl md:text-5xl text-amber-950 uppercase tracking-wide drop-shadow-sm">
+                    Mở Rương
+                </h1>
+                
+                <p class="text-base md:text-lg font-bold text-amber-900 mt-2 italic">
+                    Chọn một chiếc rương để bắt đầu thử thách!
+                </p>
+                
+                <!-- THANH CHỌN NHÓM ĐANG CHƠI -->
+                <div class="mt-4 inline-flex items-center gap-3 bg-amber-950/20 p-2 rounded-2xl border-2 border-amber-900/40">
+                    <span class="text-sm md:text-base font-bold text-amber-950 uppercase ml-3 hidden sm:inline">Lượt chơi:</span>
+                    <button onclick="selectCurrentTeam(1)" id="btn-select-team-1" class="px-4 py-2 rounded-xl text-sm md:text-base font-bold border border-amber-800 bg-amber-900/30 text-amber-950 transition">
+                        🚩 Nhóm 1
+                    </button>
+                    <button onclick="selectCurrentTeam(2)" id="btn-select-team-2" class="px-4 py-2 rounded-xl text-sm md:text-base font-bold border border-amber-800 bg-amber-900/30 text-amber-950 transition">
+                        🚩 Nhóm 2
+                    </button>
+                    <button onclick="selectCurrentTeam(3)" id="btn-select-team-3" class="px-4 py-2 rounded-xl text-sm md:text-base font-bold border border-amber-800 bg-amber-900/30 text-amber-950 transition">
+                        🚩 Nhóm 3
+                    </button>
+                </div>
+            </div>
+
+            <!-- 12 RƯƠNG -->
+            <div id="chest-grid" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4 md:gap-6 my-4"></div>
+
+            <div class="mt-6 pt-4 border-t-2 border-amber-900/30 flex justify-between items-center text-sm md:text-base font-bold text-amber-950">
+                <div class="flex items-center gap-3">
+                    <span id="chests-opened-count" class="bg-amber-900 text-amber-100 px-4 py-1 rounded-full font-mono text-base">0 / 12</span>
+                    <span class="text-base">Rương đã được mở</span>
+                </div>
+                <div id="current-turn-hint" class="italic text-amber-900 font-extrabold text-base">
+                    Đang chọn điểm cho: Nhóm 1
+                </div>
+            </div>
+        </section>
+
+        <!-- 2. QUESTION SCREEN -->
+        <section id="screen-question" class="w-full max-w-5xl parchment-card rounded-3xl p-6 md:p-10 relative hidden">
+            <div class="flex justify-between items-center border-b-2 border-amber-900/30 pb-4 mb-6">
+                <span class="bg-amber-900 text-amber-200 font-steampunk px-4 py-1.5 rounded-lg border border-amber-600 text-sm md:text-base font-bold" id="q-number-badge">
+                    THỬ THÁCH 01 / 12
+                </span>
+                
+                <div class="flex items-center gap-2 bg-amber-950/20 px-3 py-1.5 rounded-xl border border-amber-900/30">
+                    <span class="text-xs md:text-sm font-bold text-amber-950 uppercase hidden md:inline">Cộng điểm:</span>
+                    <button onclick="selectCurrentTeam(1)" id="q-team-1" class="px-3 py-1 rounded-lg text-xs md:text-sm font-bold border border-amber-800">N1</button>
+                    <button onclick="selectCurrentTeam(2)" id="q-team-2" class="px-3 py-1 rounded-lg text-xs md:text-sm font-bold border border-amber-800">N2</button>
+                    <button onclick="selectCurrentTeam(3)" id="q-team-3" class="px-3 py-1 rounded-lg text-xs md:text-sm font-bold border border-amber-800">N3</button>
+                </div>
+
+                <button onclick="goToMap()" class="text-amber-950 hover:text-amber-700 font-bold text-sm flex items-center gap-1.5 bg-amber-200/80 px-3.5 py-1.5 rounded-lg border border-amber-800/40">
+                    🗺 BẢN ĐỒ
+                </button>
+            </div>
+
+            <div class="bg-amber-100/80 border-2 border-amber-900/30 rounded-2xl p-5 md:p-8 mb-6 shadow-inner">
+                <h2 id="q-text" class="font-serif-title font-bold text-lg md:text-2xl text-amber-950 leading-relaxed"></h2>
+            </div>
+
+            <div id="q-options" class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6"></div>
+
+            <div id="q-feedback-container" class="hidden bg-slate-900/95 text-white rounded-2xl p-5 flex flex-col md:flex-row justify-between items-center gap-4 border-2 border-amber-500/50 shadow-2xl">
+                <div class="flex items-center gap-4">
+                    <div id="q-feedback-icon" class="text-4xl">✓</div>
+                    <div>
+                        <h4 id="q-feedback-title" class="font-bold text-lg text-amber-300">CHÍNH XÁC!</h4>
+                        <p id="q-feedback-desc" class="text-sm text-slate-300"></p>
+                    </div>
+                </div>
+                <div class="flex gap-3 w-full md:w-auto">
+                    <button id="btn-action-bonus" onclick="goToBonus()" class="btn-steampunk font-bold px-6 py-2.5 rounded-xl w-full md:w-auto text-sm md:text-base hidden">
+                        🔓 MỞ RƯƠNG BONUS
+                    </button>
+                    <button id="btn-action-map" onclick="goToMap()" class="bg-amber-800 hover:bg-amber-700 text-amber-100 border border-amber-500 font-bold px-5 py-2.5 rounded-xl w-full md:w-auto text-sm md:text-base">
+                        🗺 VỀ BẢN ĐỒ
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- 3. BONUS WHEEL SCREEN -->
+        <section id="screen-bonus" class="w-full max-w-4xl parchment-card rounded-3xl p-6 md:p-10 relative hidden text-center">
+            <h2 class="font-serif-title font-black text-3xl md:text-4xl text-amber-950 uppercase">
+                🎁 RƯƠNG BONUS - <span id="bonus-team-title" class="text-amber-800">NHÓM 1</span>
+            </h2>
+            <p class="text-amber-900 font-bold text-sm md:text-base mt-2 mb-5">Xoay vòng quay may mắn để nhận thêm điểm thưởng!</p>
+
+            <div class="relative max-w-sm mx-auto my-3 flex flex-col items-center">
+                <div class="wheel-pointer z-20 relative -mb-4"></div>
+                <canvas id="wheel-canvas" width="340" height="340" class="rounded-full shadow-2xl border-4 border-amber-800 bg-amber-900"></canvas>
+                <button id="btn-spin" onclick="spinWheel()" class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-30 btn-steampunk w-20 h-20 rounded-full font-black text-lg shadow-2xl border-2 border-amber-300 flex items-center justify-center">
+                    SPIN!
+                </button>
+            </div>
+
+            <div id="bonus-result" class="min-h-[50px] my-3 flex items-center justify-center">
+                <p id="bonus-result-text" class="font-serif-title font-bold text-xl md:text-2xl text-amber-950"></p>
+            </div>
+
+            <div class="mt-3">
+                <button id="btn-bonus-map" onclick="goToMap()" disabled class="bg-amber-900/40 text-amber-950/50 font-bold px-8 py-3 rounded-xl border border-amber-900/30 text-sm md:text-base">
+                    🗺 QUAY VỀ BẢN ĐỒ
+                </button>
+            </div>
+        </section>
+
+        <!-- 4. GAMEOVER SCREEN -->
+        <section id="screen-gameover" class="w-full max-w-4xl parchment-card rounded-3xl p-8 md:p-10 relative hidden text-center">
+            <div class="text-amber-800 text-6xl mb-3">🏆</div>
+            <h2 class="font-serif-title font-black text-3xl md:text-4xl text-amber-950 uppercase">
+                TỔNG KẾT HÀNH TRÌNH
+            </h2>
+
+            <div id="winner-announcement" class="my-6 p-5 bg-amber-950/20 border-2 border-amber-700 rounded-2xl font-serif-title font-bold text-xl md:text-3xl text-amber-950 shadow-lg animate-bounce"></div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4 my-6 text-left">
+                <div class="bg-amber-950/10 border-2 border-amber-900/30 p-4 rounded-2xl">
+                    <h3 class="font-bold text-amber-900 text-center border-b border-amber-900/20 pb-2 mb-3 text-lg">NHÓM 1</h3>
+                    <p class="text-sm text-amber-950">Điểm câu hỏi: <b id="t1-q" class="text-base">0</b></p>
+                    <p class="text-sm text-amber-950">Điểm Bonus: <b id="t1-b" class="text-base">0</b></p>
+                    <p class="text-base font-black text-amber-900 mt-2">Tổng: <span id="t1-total" class="font-mono text-2xl">0</span></p>
+                </div>
+                <div class="bg-amber-950/10 border-2 border-amber-900/30 p-4 rounded-2xl">
+                    <h3 class="font-bold text-amber-900 text-center border-b border-amber-900/20 pb-2 mb-3 text-lg">NHÓM 2</h3>
+                    <p class="text-sm text-amber-950">Điểm câu hỏi: <b id="t2-q" class="text-base">0</b></p>
+                    <p class="text-sm text-amber-950">Điểm Bonus: <b id="t2-b" class="text-base">0</b></p>
+                    <p class="text-base font-black text-amber-900 mt-2">Tổng: <span id="t2-total" class="font-mono text-2xl">0</span></p>
+                </div>
+                <div class="bg-amber-950/10 border-2 border-amber-900/30 p-4 rounded-2xl">
+                    <h3 class="font-bold text-amber-900 text-center border-b border-amber-900/20 pb-2 mb-3 text-lg">NHÓM 3</h3>
+                    <p class="text-sm text-amber-950">Điểm câu hỏi: <b id="t3-q" class="text-base">0</b></p>
+                    <p class="text-sm text-amber-950">Điểm Bonus: <b id="t3-b" class="text-base">0</b></p>
+                    <p class="text-base font-black text-amber-900 mt-2">Tổng: <span id="t3-total" class="font-mono text-2xl">0</span></p>
+                </div>
+            </div>
+
+            <button onclick="restartGame()" class="btn-steampunk font-black text-base md:text-lg px-8 py-3 rounded-2xl border-2 border-amber-200 mt-4">
+                🔄 CHƠI LẠI
+            </button>
+        </section>
+
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="bg-slate-950 border-t border-amber-900/40 text-amber-500/80 py-3 text-center text-xs md:text-sm relative z-10 font-semibold">
+        Trò Chơi Mở Rương
+    </footer>
+
+    <div id="coins-container" class="fixed inset-0 pointer-events-none z-50 overflow-hidden"></div>
+
+    <script>
+        const questionsData = [
+            { id: 1, question: "Quốc gia nào vào cuối thế kỷ XIX - đầu thế kỷ XX được mệnh danh là \"Đế quốc Mặt Trời không bao giờ lặn\" nhờ sở hữu hệ thống thuộc địa rộng lớn nhất thế giới?", options: ["A. Đế quốc Đức", "B. Đế quốc Anh", "C. Đế quốc Pháp", "D. Đế quốc Mỹ"], correct: 1 },
+            { id: 2, question: "Bức tranh biếm họa con bạch tuộc khổng lồ quấn quanh mỏ dầu phản ánh hiện tượng kinh tế nổi bật nào của Chủ nghĩa Tư bản?", options: ["A. Sự xuất hiện của các tổ chức độc quyền", "B. Sự suy thoái của ngành khai thác dầu mỏ", "C. Sự phát triển của ngành nông nghiệp", "D. Sự bình ổn giá cả trên thị trường"], correct: 0 },
+            { id: 3, question: "Phong trào biểu tình \"Chiếm lấy phố Uôn\" (Occupy Wall Street) năm 2011 tại Mỹ mang khẩu hiệu \"Chúng tôi là 99%\" nhằm phản ánh vấn đề gì?", options: ["A. Tình trạng ô nhiễm môi trường toàn cầu", "B. Sự chênh lệch giàu nghèo bất bình đẳng trong xã hội tư bản", "C. Sự thiếu hụt nguồn nhân lực trình độ cao", "D. Tình trạng phân biệt chủng tộc tại các trường học"], correct: 1 },
+            { id: 4, question: "Phát minh công nghiệp nào ở thế kỷ XVIII - XIX đã tạo ra bước ngoặt làm thay đổi toàn bộ bộ mặt sản xuất của Chủ nghĩa Tư bản?", options: ["A. Động cơ hơi nước", "B. Bánh xe gỗ", "C. La bàn định hướng", "D. Kỹ thuật in ấn"], correct: 0 },
+            { id: 5, question: "Nhóm G7 được thành lập năm 1976 là diễn đàn kinh tế của 7 quốc gia tư bản phát triển hàng đầu thế giới, KHÔNG bao gồm quốc gia nào sau đây?", options: ["A. Mỹ", "B. Nhật Bản", "C. Trung Quốc", "D. Đức"], correct: 2 },
+            { id: 6, question: "Điểm giống nhau nổi bật giữa các tập đoàn công nghệ lớn hiện nay (như Google, Apple) với các \"Tổ chức độc quyền\" cuối thế kỷ XIX là gì?", options: ["A. Chỉ hoạt động trong phạm vi một quốc gia", "B. Nắm giữ sức mạnh kinh tế lớn và phạm vi ảnh hưởng toàn cầu", "C. Không sử dụng thành tựu khoa học - công nghệ", "D. Hoàn toàn do nhà nước quản lý 100%"], correct: 1 },
+            { id: 7, question: "Khái niệm \"Chủ nghĩa tư bản hiện đại\" dùng để chỉ giai đoạn phát triển của Chủ nghĩa Tư bản tính từ mốc thời gian nào?", options: ["A. Sau Cách mạng Pháp 1789", "B. Sau Chiến tranh thế giới thứ hai (1945) đến nay", "C. Đầu thế kỷ XVII", "D. Sau cuộc khủng hoảng dầu mỏ 1973"], correct: 1 },
+            { id: 8, question: "Hiện tượng các nước tư bản phương Tây tăng cường xâm lược thuộc địa ở châu Á, châu Phi và Mỹ La-tinh nhằm mục đích chính là gì?", options: ["A. Giúp đỡ các nước nghèo phát triển", "B. Tìm kiếm thị trường, nguồn nguyên liệu và nhân công", "C. Mở rộng giao lưu văn hóa du lịch", "D. Giải quyết tình trạng thừa lương thực trong nước"], correct: 1 },
+            { id: 9, question: "C. Mác nhận định Chủ nghĩa Tư bản tạo ra lực lượng sản xuất đồ sộ nhờ việc ứng dụng yếu tố nào sau đây vào sản xuất?", options: ["A. Lao động thủ công truyền thống", "B. Các thành tựu của cách mạng khoa học - công nghệ và máy móc", "C. Chế độ bóc lột nô lệ thời cổ đại", "D. Kinh tế tự cung tự cấp"], correct: 1 },
+            { id: 10, question: "Quốc gia châu Á nào cuối thế kỷ XIX đã thực hiện cải cách tiến bộ, chuyển sang Chủ nghĩa Tư bản và thoát khỏi nguy cơ trở thành thuộc địa?", options: ["A. Trung Quốc", "B. Ấn Độ", "C. Nhật Bản", "D. Việt Nam"], correct: 2 },
+            { id: 11, question: "Một trong những thách thức lớn nhất mà Chủ nghĩa Tư bản hiện đại đang phải đối mặt mang tính toàn cầu hiện nay là gì?", options: ["A. Thiếu hụt các món ăn nhanh", "B. Các cuộc khủng hoảng kinh tế, tài chính và biến đổi khí hậu", "C. Không thể ứng dụng công nghệ mới", "D. Sự gia tăng của chế độ phong kiến"], correct: 1 },
+            { id: 12, question: "Tại sao các nước tư bản phát triển hiện nay đang đẩy mạnh nghiên cứu và tìm kiếm các nguồn năng lượng mới (xanh, sạch)?", options: ["A. Do sự phụ thuộc quá lớn vào nguồn dầu mỏ và nguy cơ khủng hoảng năng lượng", "B. Do các nguồn năng lượng cũ đã hoàn toàn biến mất", "C. Do giá thành năng lượng sạch rẻ hơn tất cả các loại năng lượng", "D. Do các nước thuộc địa yêu cầu"], correct: 0 }
+        ];
+
+        let gameState = {
+            currentTeam: 1,
+            teams: {
+                1: { score: 0, qScore: 0, bonusScore: 0 },
+                2: { score: 0, qScore: 0, bonusScore: 0 },
+                3: { score: 0, qScore: 0, bonusScore: 0 }
+            },
+            currentQuestionIndex: null,
+            chestStates: Array(12).fill('locked'),
+            soundEnabled: true
+        };
+
+        const bgmMap = document.getElementById('bgm-map');
+        if (bgmMap) bgmMap.volume = 0.3;
+
+        let audioCtx = null;
+        function getAudioContext() {
+            if (!audioCtx) {
+                const AudioContext = window.AudioContext || window.webkitAudioContext;
+                if (AudioContext) audioCtx = new AudioContext();
+            }
+            if (audioCtx && audioCtx.state === 'suspended') audioCtx.resume();
+            return audioCtx;
+        }
+
+        document.body.addEventListener('click', () => {
+            if (gameState.soundEnabled && bgmMap && bgmMap.paused) bgmMap.play().catch(() => {});
+        }, { once: true });
+
+        function playSound(type) {
+            if (!gameState.soundEnabled) return;
+            const ctx = getAudioContext();
+            if (!ctx) return;
+            const now = ctx.currentTime;
+
+            if (type === 'correct') {
+                const osc = ctx.createOscillator(), gain = ctx.createGain();
+                osc.type = 'sine'; osc.frequency.setValueAtTime(880, now); osc.frequency.exponentialRampToValueAtTime(1760, now + 0.3);
+                gain.gain.setValueAtTime(0.3, now); gain.gain.exponentialRampToValueAtTime(0.01, now + 0.3);
+                osc.connect(gain); gain.connect(ctx.destination); osc.start(now); osc.stop(now + 0.3);
+            } else if (type === 'wrong') {
+                const osc = ctx.createOscillator(), gain = ctx.createGain();
+                osc.type = 'sawtooth'; osc.frequency.setValueAtTime(150, now); osc.frequency.linearRampToValueAtTime(100, now + 0.4);
+                gain.gain.setValueAtTime(0.4, now); gain.gain.exponentialRampToValueAtTime(0.01, now + 0.4);
+                osc.connect(gain); gain.connect(ctx.destination); osc.start(now); osc.stop(now + 0.4);
+            } else if (type === 'unlock') {
+                const osc = ctx.createOscillator(), gain = ctx.createGain();
+                osc.type = 'triangle'; osc.frequency.setValueAtTime(523.25, now); osc.frequency.setValueAtTime(783.99, now + 0.2);
+                gain.gain.setValueAtTime(0.3, now); gain.gain.exponentialRampToValueAtTime(0.01, now + 0.4);
+                osc.connect(gain); gain.connect(ctx.destination); osc.start(now); osc.stop(now + 0.4);
+            } else if (type === 'tick') {
+                const osc = ctx.createOscillator(), gain = ctx.createGain();
+                osc.type = 'square'; osc.frequency.setValueAtTime(400, now);
+                gain.gain.setValueAtTime(0.05, now); gain.gain.exponentialRampToValueAtTime(0.001, now + 0.03);
+                osc.connect(gain); gain.connect(ctx.destination); osc.start(now); osc.stop(now + 0.03);
+            }
+        }
+
+        function toggleSound() {
+            gameState.soundEnabled = !gameState.soundEnabled;
+            document.getElementById('icon-sound-on').classList.toggle('hidden', !gameState.soundEnabled);
+            document.getElementById('icon-sound-off').classList.toggle('hidden', gameState.soundEnabled);
+            if (bgmMap) { if (gameState.soundEnabled) bgmMap.play().catch(() => {}); else bgmMap.pause(); }
+        }
+
+        function selectCurrentTeam(teamNum) {
+            gameState.currentTeam = teamNum;
+            
+            [1, 2, 3].forEach(id => {
+                const btnMap = document.getElementById(`btn-select-team-${id}`);
+                const btnQ = document.getElementById(`q-team-${id}`);
+                if (id === teamNum) {
+                    btnMap?.classList.add('team-btn-active');
+                    btnQ?.classList.add('team-btn-active');
+                } else {
+                    btnMap?.classList.remove('team-btn-active');
+                    btnQ?.classList.remove('team-btn-active');
+                }
+            });
+
+            document.getElementById('current-turn-hint').textContent = `Đang chọn cộng điểm cho: NHÓM ${teamNum}`;
+        }
+
+        function updateScoreDisplay() {
+            document.getElementById('score-team-1').textContent = String(gameState.teams[1].score).padStart(4, '0');
+            document.getElementById('score-team-2').textContent = String(gameState.teams[2].score).padStart(4, '0');
+            document.getElementById('score-team-3').textContent = String(gameState.teams[3].score).padStart(4, '0');
+        }
+
+        function showScreen(screenId) {
+            ['screen-map', 'screen-question', 'screen-bonus', 'screen-gameover'].forEach(id => {
+                document.getElementById(id).classList.add('hidden');
+            });
+            document.getElementById(screenId).classList.remove('hidden');
+        }
+
+        function renderChestGrid() {
+            const grid = document.getElementById('chest-grid');
+            grid.innerHTML = '';
+            let openedCount = 0;
+
+            for (let i = 0; i < 12; i++) {
+                const status = gameState.chestStates[i];
+                if (status === 'opened') openedCount++;
+
+                const chestBtn = document.createElement('button');
+                chestBtn.className = `chest-card rounded-2xl p-4 flex flex-col items-center justify-between text-center relative overflow-hidden group ${status === 'opened' ? 'opened' : ''}`;
+                chestBtn.onclick = () => openQuestion(i);
+
+                if (status === 'opened' || status === 'failed') chestBtn.disabled = true;
+
+                const numStr = String(i + 1).padStart(2, '0');
+                let icon = `<svg class="w-12 h-12 md:w-16 md:h-16 text-amber-400 group-hover:scale-110 transition" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path></svg>`;
+                if (status === 'opened') icon = `<svg class="w-12 h-12 md:w-16 md:h-16 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M8 11V7a4 4 0 118 0m-4 8v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2z"></path></svg>`;
+                if (status === 'failed') icon = `<svg class="w-12 h-12 md:w-16 md:h-16 text-rose-600/70" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path></svg>`;
+
+                chestBtn.innerHTML = `
+                    <div class="text-amber-400 font-steampunk text-xs md:text-sm font-bold tracking-wider">RƯƠNG ${numStr}</div>
+                    <div class="my-2">${icon}</div>
+                    <div class="text-xs md:text-sm font-extrabold ${status === 'opened' ? 'text-emerald-300' : status === 'failed' ? 'text-rose-400' : 'text-amber-200'}">
+                        ${status === 'opened' ? '🔓 ĐÃ MỞ' : status === 'failed' ? '🔒 ĐÃ KHÓA' : 'MỞ RƯƠNG'}
+                    </div>
+                `;
+                grid.appendChild(chestBtn);
+            }
+
+            document.getElementById('chests-opened-count').textContent = `${openedCount} / 12`;
+            if (gameState.chestStates.filter(s => s !== 'locked').length === 12) {
+                setTimeout(showGameover, 800);
+            }
+        }
+
+        function goToMap() {
+            renderChestGrid();
+            selectCurrentTeam(gameState.currentTeam);
+            showScreen('screen-map');
+        }
+
+        function openQuestion(index) {
+            getAudioContext();
+            gameState.currentQuestionIndex = index;
+            const q = questionsData[index];
+
+            document.getElementById('q-number-badge').textContent = `THỬ THÁCH ${String(index + 1).padStart(2, '0')} / 12`;
+            document.getElementById('q-text').textContent = q.question;
+            document.getElementById('q-feedback-container').classList.add('hidden');
+
+            const optionsContainer = document.getElementById('q-options');
+            optionsContainer.innerHTML = '';
+
+            q.options.forEach((optText, optIdx) => {
+                const btn = document.createElement('button');
+                btn.className = "btn-option bg-amber-950/20 hover:bg-amber-900/40 text-amber-950 font-bold text-left p-4 md:p-5 rounded-2xl border-2 border-amber-900/30 transition text-base md:text-lg flex items-start gap-3 shadow";
+                btn.innerHTML = `<span class="font-extrabold text-amber-900 shrink-0">${optText.substring(0, 3)}</span> <span>${optText.substring(3)}</span>`;
+                btn.onclick = () => selectAnswer(optIdx, btn);
+                optionsContainer.appendChild(btn);
+            });
+
+            selectCurrentTeam(gameState.currentTeam);
+            showScreen('screen-question');
+        }
+
+        function selectAnswer(selectedIndex, clickedBtn) {
+            const index = gameState.currentQuestionIndex;
+            const q = questionsData[index];
+            const allOptionBtns = document.querySelectorAll('.btn-option');
+            allOptionBtns.forEach(btn => btn.disabled = true);
+
+            const isCorrect = (selectedIndex === q.correct);
+            const team = gameState.currentTeam;
+
+            const feedbackContainer = document.getElementById('q-feedback-container');
+            const feedbackTitle = document.getElementById('q-feedback-title');
+            const feedbackDesc = document.getElementById('q-feedback-desc');
+            const btnBonus = document.getElementById('btn-action-bonus');
+
+            feedbackContainer.classList.remove('hidden');
+
+            if (isCorrect) {
+                playSound('correct');
+                clickedBtn.classList.add('bg-emerald-700', 'text-white', 'border-emerald-400');
+
+                gameState.teams[team].score += 100;
+                gameState.teams[team].qScore += 100;
+                gameState.chestStates[index] = 'opened';
+                updateScoreDisplay();
+
+                feedbackTitle.textContent = `NHÓM ${team} CHÍNH XÁC! (+100 ĐIỂM)`;
+                feedbackTitle.className = 'font-bold text-emerald-300 text-xl';
+                feedbackDesc.textContent = `Điểm đã được cộng cho Nhóm ${team}. Hãy xoay vòng quay để nhận Bonus!`;
+                btnBonus.classList.remove('hidden');
+            } else {
+                playSound('wrong');
+                clickedBtn.classList.add('bg-rose-800', 'text-white', 'border-rose-400');
+                allOptionBtns[q.correct].classList.add('bg-emerald-800/80', 'text-white');
+
+                gameState.chestStates[index] = 'failed';
+
+                feedbackTitle.textContent = 'CHƯA CHÍNH XÁC!';
+                feedbackTitle.className = 'font-bold text-rose-300 text-xl';
+                feedbackDesc.textContent = 'Rương đã bị khóa. Nhường lượt cho các câu tiếp theo!';
+                btnBonus.classList.add('hidden');
+            }
+        }
+
+        /* BONUS WHEEL */
+        const bonusValues = [50, 100, 150, 200, 0];
+        const wheelColors = ['#b8860b', '#7a1c1c', '#101c2e', '#2d5a27', '#8c6211'];
+        let wheelAngle = 0, isSpinning = false;
+
+        function drawWheel() {
+            const canvas = document.getElementById('wheel-canvas');
+            if (!canvas) return;
+            const ctx = canvas.getContext('2d');
+            const numSlices = bonusValues.length;
+            const sliceAngle = (2 * Math.PI) / numSlices;
+            const radius = canvas.width / 2;
+
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            for (let i = 0; i < numSlices; i++) {
+                const angle = wheelAngle + i * sliceAngle;
+                ctx.beginPath();
+                ctx.moveTo(radius, radius);
+                ctx.arc(radius, radius, radius - 6, angle, angle + sliceAngle);
+                ctx.fillStyle = wheelColors[i % wheelColors.length];
+                ctx.fill();
+                ctx.lineWidth = 2; ctx.strokeStyle = '#f4e4bc'; ctx.stroke();
+
+                ctx.save();
+                ctx.translate(radius, radius);
+                ctx.rotate(angle + sliceAngle / 2);
+                ctx.textAlign = 'right'; ctx.fillStyle = '#ffffff';
+                ctx.font = 'bold 22px Be Vietnam Pro, sans-serif';
+                ctx.fillText(`+${bonusValues[i]}`, radius - 25, 8);
+                ctx.restore();
+            }
+
+            ctx.beginPath(); ctx.arc(radius, radius, radius - 3, 0, 2 * Math.PI);
+            ctx.lineWidth = 6; ctx.strokeStyle = '#c59b27'; ctx.stroke();
+        }
+
+        function goToBonus() {
+            playSound('unlock');
+            document.getElementById('bonus-team-title').textContent = `NHÓM ${gameState.currentTeam}`;
+            showScreen('screen-bonus');
+            document.getElementById('bonus-result-text').textContent = '';
+            document.getElementById('btn-spin').disabled = false;
+            
+            const btnMap = document.getElementById('btn-bonus-map');
+            btnMap.disabled = true;
+            btnMap.className = "bg-amber-900/40 text-amber-950/50 font-bold px-8 py-3 rounded-xl border border-amber-900/30 text-sm md:text-base";
+            setTimeout(drawWheel, 50);
+        }
+
+        function spinWheel() {
+            if (isSpinning) return;
+            isSpinning = true;
+            document.getElementById('btn-spin').disabled = true;
+
+            const targetIdx = Math.floor(Math.random() * bonusValues.length);
+            const numSlices = bonusValues.length;
+            const sliceAngle = (2 * Math.PI) / numSlices;
+
+            const targetSliceCenter = targetIdx * sliceAngle + sliceAngle / 2;
+            const extraRounds = 5;
+            const finalAngle = extraRounds * 2 * Math.PI + (1.5 * Math.PI - targetSliceCenter);
+
+            const duration = 3500;
+            const startAngle = wheelAngle;
+            const startTime = performance.now();
+            let lastTickSlice = -1;
+
+            function animateWheel(now) {
+                const progress = Math.min((now - startTime) / duration, 1);
+                const easeOut = 1 - Math.pow(1 - progress, 3);
+                wheelAngle = startAngle + (finalAngle - startAngle) * easeOut;
+
+                const currentSliceAtPointer = Math.floor(((1.5 * Math.PI - wheelAngle) % (2 * Math.PI) + 2 * Math.PI) % (2 * Math.PI) / sliceAngle);
+                if (currentSliceAtPointer !== lastTickSlice) {
+                    playSound('tick');
+                    lastTickSlice = currentSliceAtPointer;
+                }
+
+                drawWheel();
+
+                if (progress < 1) {
+                    requestAnimationFrame(animateWheel);
+                } else {
+                    isSpinning = false;
+                    const bonusWon = bonusValues[targetIdx];
+                    const team = gameState.currentTeam;
+
+                    gameState.teams[team].score += bonusWon;
+                    gameState.teams[team].bonusScore += bonusWon;
+                    updateScoreDisplay();
+
+                    playSound(bonusWon > 0 ? 'correct' : 'wrong');
+                    if (bonusWon > 0) spawnCoins();
+
+                    const resultText = document.getElementById('bonus-result-text');
+                    resultText.textContent = `🎉 NHÓM ${team} NHẬN ĐƯỢC +${bonusWon} ĐIỂM BONUS!`;
+
+                    const btnMap = document.getElementById('btn-bonus-map');
+                    btnMap.disabled = false;
+                    btnMap.className = "btn-steampunk font-extrabold px-10 py-3 rounded-xl text-base cursor-pointer";
+                }
+            }
+            requestAnimationFrame(animateWheel);
+        }
+
+        function spawnCoins() {
+            const container = document.getElementById('coins-container');
+            container.innerHTML = '';
+            for (let i = 0; i < 30; i++) {
+                const coin = document.createElement('div');
+                coin.className = 'coin-particle text-amber-400 font-bold text-3xl';
+                coin.textContent = '🪙';
+                coin.style.left = Math.random() * 100 + 'vw';
+                coin.style.animationDuration = (1.5 + Math.random() * 1.5) + 's';
+                container.appendChild(coin);
+            }
+            setTimeout(() => { container.innerHTML = ''; }, 3500);
+        }
+
+        function showGameover() {
+            playSound('correct');
+            spawnCoins();
+
+            [1, 2, 3].forEach(id => {
+                document.getElementById(`t${id}-q`).textContent = gameState.teams[id].qScore;
+                document.getElementById(`t${id}-b`).textContent = gameState.teams[id].bonusScore;
+                document.getElementById(`t${id}-total`).textContent = gameState.teams[id].score;
+            });
+
+            let maxScore = -1;
+            let winners = [];
+            [1, 2, 3].forEach(id => {
+                if (gameState.teams[id].score > maxScore) {
+                    maxScore = gameState.teams[id].score;
+                    winners = [id];
+                } else if (gameState.teams[id].score === maxScore && maxScore > 0) {
+                    winners.push(id);
+                }
+            });
+
+            const winnerBox = document.getElementById('winner-announcement');
+            if (winners.length === 1) {
+                winnerBox.innerHTML = `👑 XIN CHÚC MỪNG <b>NHÓM ${winners[0]}</b> ĐÃ XUẤT SẮC DẪN ĐẦU VÀ GIÀNH CHIẾN THẮNG CHUNG CUỘC! 🏆`;
+            } else if (winners.length > 1) {
+                winnerBox.innerHTML = `🤝 XIN CHÚC MỪNG <b>NHÓM ${winners.join(' VÀ NHÓM ')}</b> ĐÃ ĐỒNG GIẢI NHẤT VỚI ĐIỂM SỐ CAO NHẤT! 🏆`;
+            } else {
+                winnerBox.textContent = `HÀNH TRÌNH KHÁM PHÁ HOÀN TẤT!`;
+            }
+
+            showScreen('screen-gameover');
+        }
+
+        function restartGame() {
+            gameState.currentTeam = 1;
+            gameState.teams = { 1: { score: 0, qScore: 0, bonusScore: 0 }, 2: { score: 0, qScore: 0, bonusScore: 0 }, 3: { score: 0, qScore: 0, bonusScore: 0 } };
+            gameState.chestStates = Array(12).fill('locked');
+            updateScoreDisplay();
+            goToMap();
+        }
+
+        window.onload = function() {
+            updateScoreDisplay();
+            goToMap();
+        };
+    </script>
+</body>
+</html>
