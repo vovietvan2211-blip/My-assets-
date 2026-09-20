@@ -4,12 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Mở Rương - Trò Chơi Mở Rương</title>
-    <!-- Tailwind CSS -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Google Fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700;800&family=Playfair+Display:ital,wght@0,600;0,800;1,600&family=Special+Elite&display=swap" rel="stylesheet">
     
     <style>
         :root {
@@ -22,19 +16,42 @@
             --ink-black: #2b2118;
         }
 
-        body {
-            font-family: 'Be Vietnam Pro', sans-serif;
-            background-color: #0d131a;
-            color: var(--ink-black);
-            background-image: 
-                radial-gradient(circle at 50% 50%, rgba(20, 28, 40, 0.75), rgba(5, 8, 12, 0.95)),
-                url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%23223042' fill-opacity='0.2' fill-rule='evenodd'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/svg%3E");
-            min-height: 100vh;
-            overflow-x: hidden;
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
         }
 
-        .font-serif-title { font-family: 'Playfair Display', serif; }
-        .font-steampunk { font-family: 'Special Elite', cursive, serif; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif;
+            background-color: #0d131a;
+            color: var(--ink-black);
+            background-image: radial-gradient(circle at 50% 50%, rgba(20, 28, 40, 0.75), rgba(5, 8, 12, 0.95));
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            position: relative;
+            overflow-x: hidden;
+            text-rendering: optimizeLegibility;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        .font-serif-title { 
+            font-family: Georgia, 'Times New Roman', Times, serif; 
+        }
+
+        .font-steampunk { 
+            font-family: 'Courier New', Courier, monospace; 
+            font-weight: bold;
+        }
+
+        /* Font chuyên dụng hỗ trợ tiếng Việt có dấu nét căng, không lỗi */
+        .vietnamese-question-font {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+            letter-spacing: -0.01em;
+            word-spacing: 0.05em;
+        }
 
         .parchment-card {
             background: linear-gradient(135deg, #fceecb 0%, #e8d098 50%, #d8b877 100%);
@@ -42,22 +59,7 @@
             border-image: linear-gradient(to bottom right, #8c6211, #3a270d, #b8860b, #5a3f1b) 1;
             box-shadow: 0 15px 35px rgba(0,0,0,0.8), inset 0 0 50px rgba(90, 63, 27, 0.4);
             position: relative;
-        }
-
-        .parchment-card::before {
-            content: '';
-            position: absolute;
-            top: 0; left: 0; right: 0; bottom: 0;
-            background: url("data:image/svg+xml,%3Csvg width='100' height='100' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.04' numOctaves='3' result='noise'/%3E%3CfeColorMatrix type='matrix' values='1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 0.07 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
-            pointer-events: none;
-            opacity: 0.7;
-        }
-
-        .map-overlay-bg {
-            background-image: url("data:image/svg+xml,%3Csvg width='400' height='400' viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%238c6211' fill-opacity='0.08'%3E%3Ccircle cx='200' cy='200' r='180' stroke='%238c6211' stroke-width='2' fill='none'/%3E%3Ccircle cx='200' cy='200' r='140' stroke='%238c6211' stroke-width='1' fill='none' stroke-dasharray='5,5'/%3E%3Cpath d='M200 10 L215 185 L390 200 L215 215 L200 390 L185 215 L10 200 L185 185 Z'/%3E%3C/g%3E%3C/svg%3E");
-            background-position: center;
-            background-repeat: no-repeat;
-            background-size: contain;
+            border-radius: 1.5rem;
         }
 
         .btn-steampunk {
@@ -67,6 +69,7 @@
             text-shadow: 0 1px 0 rgba(255,255,255,0.4);
             box-shadow: 0 4px 10px rgba(0,0,0,0.5), inset 0 1px 2px rgba(255,255,255,0.6);
             transition: all 0.2s ease;
+            cursor: pointer;
         }
 
         .btn-steampunk:hover:not(:disabled) {
@@ -75,12 +78,26 @@
             box-shadow: 0 6px 15px rgba(212, 175, 55, 0.4), inset 0 1px 2px rgba(255,255,255,0.8);
         }
 
+        .btn-steampunk:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+        }
+
         .chest-card {
             background: linear-gradient(145deg, #4a3011, #2b1a08);
             border: 3px solid #b8860b;
             box-shadow: 0 8px 20px rgba(0,0,0,0.6), inset 0 0 10px rgba(0,0,0,0.8);
             transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
             min-height: 125px;
+            cursor: pointer;
+            border-radius: 1rem;
+            padding: 1rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: space-between;
+            text-align: center;
         }
 
         .chest-card:hover:not(.opened):not(.failed) {
@@ -92,6 +109,12 @@
         .chest-card.opened {
             background: linear-gradient(145deg, #1b3d22, #0d2112);
             border-color: #4ade80;
+        }
+
+        .chest-card.failed {
+            background: linear-gradient(145deg, #3d1b1b, #210d0d);
+            border-color: #f87171;
+            cursor: not-allowed;
         }
 
         .wheel-pointer {
@@ -120,129 +143,234 @@
             font-weight: 800 !important;
             box-shadow: 0 0 12px rgba(212, 175, 55, 0.9) !important;
         }
+
+        .hidden { display: none !important; }
+        .flex { display: flex; }
+        .flex-col { flex-direction: column; }
+        .flex-row { flex-direction: row; }
+        .items-center { align-items: center; }
+        .justify-between { justify-content: space-between; }
+        .justify-center { justify-content: center; }
+        .grow { flex-grow: 1; }
+        .text-center { text-align: center; }
+        .w-full { width: 100%; }
+        .max-w-7xl { max-width: 80rem; margin-left: auto; margin-right: auto; }
+        .max-w-5xl { max-width: 64rem; margin-left: auto; margin-right: auto; }
+        .max-w-4xl { max-width: 56rem; margin-left: auto; margin-right: auto; }
+
+        .grid-chests {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 1rem;
+            margin-top: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .grid-options {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        @media (min-width: 640px) {
+            .grid-chests { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+        }
+        @media (min-width: 768px) {
+            .grid-chests { grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 1.5rem; }
+            .grid-options { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+            .md-flex-row { flex-direction: row; }
+        }
+
+        /* Additional CSS Utilities */
+        header {
+            background-color: rgba(15, 23, 42, 0.95);
+            border-bottom: 2px solid rgba(217, 119, 6, 0.5);
+            padding: 0.75rem 1rem;
+            position: sticky;
+            top: 0;
+            z-index: 50;
+            box-shadow: 0 10px 15px -3px rgba(0,0,0,0.5);
+        }
+
+        .score-box {
+            background-color: rgba(69, 26, 3, 0.9);
+            border: 2px solid rgba(245, 158, 11, 0.5);
+            padding: 0.375rem 1rem;
+            border-radius: 0.75rem;
+            text-align: center;
+        }
+
+        .btn-team-select {
+            padding: 0.5rem 1rem;
+            border-radius: 0.75rem;
+            font-size: 0.875rem;
+            font-weight: 700;
+            border: 1px solid #78350f;
+            background-color: rgba(120, 53, 15, 0.3);
+            color: #451a03;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .btn-option {
+            background-color: rgba(69, 26, 3, 0.15);
+            color: #2b2118;
+            font-weight: 700;
+            text-align: left;
+            padding: 1.25rem;
+            border-radius: 1rem;
+            border: 2px solid rgba(120, 53, 15, 0.3);
+            cursor: pointer;
+            transition: all 0.2s;
+            font-size: 1.05rem;
+            display: flex;
+            align-items: flex-start;
+            gap: 0.75rem;
+        }
+
+        .btn-option:hover:not(:disabled) {
+            background-color: rgba(120, 53, 15, 0.3);
+        }
+
+        .pulse-icon {
+            animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+        }
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: .5; }
+        }
+
+        .animate-bounce {
+            animation: bounce 1s infinite;
+        }
+        @keyframes bounce {
+            0%, 100% { transform: translateY(-5%); animation-timing-function: cubic-bezier(0.8,0,1,1); }
+            50% { transform: translateY(0); animation-timing-function: cubic-bezier(0,0,0.2,1); }
+        }
     </style>
 </head>
-<body class="flex flex-col min-h-screen justify-between relative selection:bg-amber-700 selection:text-white">
+<body>
 
+    <!-- Giữ nguyên thẻ audio và thuộc tính loop -->
     <audio id="bgm-map" loop src="bgm_map.mp3"></audio>
 
     <!-- HEADER / BẢNG ĐIỂM -->
-    <header class="bg-slate-900/95 border-b-2 border-amber-600/50 backdrop-blur px-4 py-3 sticky top-0 z-50 shadow-xl">
-        <div class="max-w-7xl mx-auto flex flex-wrap justify-between items-center gap-3">
+    <header>
+        <div class="max-w-7xl flex flex-row justify-between items-center" style="gap: 0.75rem; flex-wrap: wrap;">
             
-            <div class="flex items-center gap-3">
-                <svg class="w-8 h-8 text-amber-500 animate-pulse" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <div class="flex items-center" style="gap: 0.75rem;">
+                <svg class="pulse-icon" style="width: 2rem; height: 2rem; color: #f59e0b;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7"></path>
                 </svg>
-                <span class="font-serif-title font-bold text-lg md:text-2xl text-amber-200 uppercase tracking-wide">MỞ RƯƠNG</span>
+                <span class="font-serif-title uppercase" style="font-weight: 800; font-size: 1.25rem; color: #fde68a; letter-spacing: 0.05em;">MỞ RƯƠNG</span>
             </div>
 
             <!-- ĐIỂM SỐ 3 NHÓM -->
-            <div class="flex items-center gap-3 md:gap-6">
-                <div class="bg-amber-950/90 border-2 border-amber-500/50 px-4 py-1.5 rounded-xl text-center shadow">
-                    <span class="text-xs text-amber-400 block font-bold uppercase tracking-wider">NHÓM 1</span>
-                    <span id="score-team-1" class="font-mono font-bold text-lg md:text-xl text-amber-300">0000</span>
+            <div class="flex items-center" style="gap: 1rem;">
+                <div class="score-box">
+                    <span style="font-size: 0.75rem; color: #fbbf24; display: block; font-weight: 700; text-transform: uppercase;">NHÓM 1</span>
+                    <span id="score-team-1" class="font-steampunk" style="font-size: 1.25rem; color: #fcd34d;">0000</span>
                 </div>
-                <div class="bg-amber-950/90 border-2 border-amber-500/50 px-4 py-1.5 rounded-xl text-center shadow">
-                    <span class="text-xs text-amber-400 block font-bold uppercase tracking-wider">NHÓM 2</span>
-                    <span id="score-team-2" class="font-mono font-bold text-lg md:text-xl text-amber-300">0000</span>
+                <div class="score-box">
+                    <span style="font-size: 0.75rem; color: #fbbf24; display: block; font-weight: 700; text-transform: uppercase;">NHÓM 2</span>
+                    <span id="score-team-2" class="font-steampunk" style="font-size: 1.25rem; color: #fcd34d;">0000</span>
                 </div>
-                <div class="bg-amber-950/90 border-2 border-amber-500/50 px-4 py-1.5 rounded-xl text-center shadow">
-                    <span class="text-xs text-amber-400 block font-bold uppercase tracking-wider">NHÓM 3</span>
-                    <span id="score-team-3" class="font-mono font-bold text-lg md:text-xl text-amber-300">0000</span>
+                <div class="score-box">
+                    <span style="font-size: 0.75rem; color: #fbbf24; display: block; font-weight: 700; text-transform: uppercase;">NHÓM 3</span>
+                    <span id="score-team-3" class="font-steampunk" style="font-size: 1.25rem; color: #fcd34d;">0000</span>
                 </div>
 
-                <button id="btn-sound-toggle" onclick="toggleSound()" class="p-2 rounded-xl bg-slate-800 border-2 border-amber-600/50 text-amber-400 hover:bg-slate-700">
-                    <svg id="icon-sound-on" class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.536 8.464a5 5 0 010 7.072M18.364 5.636a9 9 0 010 12.728M11 5L6 9H2v6h4l5 4V5z"></path></svg>
-                    <svg id="icon-sound-off" class="w-6 h-6 hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2"></path></svg>
+                <button id="btn-sound-toggle" onclick="toggleSound()" style="padding: 0.5rem; border-radius: 0.75rem; background-color: #1e293b; border: 2px solid rgba(217,119,6,0.5); color: #fbbf24; cursor: pointer;">
+                    <svg id="icon-sound-on" style="width: 1.5rem; height: 1.5rem;" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.536 8.464a5 5 0 010 7.072M18.364 5.636a9 9 0 010 12.728M11 5L6 9H2v6h4l5 4V5z"></path></svg>
+                    <svg id="icon-sound-off" class="hidden" style="width: 1.5rem; height: 1.5rem;" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2"></path></svg>
                 </button>
             </div>
         </div>
     </header>
 
     <!-- MAIN CONTENT -->
-    <main class="flex-grow container mx-auto px-4 py-6 flex justify-center items-center relative z-10">
+    <main class="grow flex justify-center items-center" style="padding: 1.5rem 1rem; position: relative; z-index: 10;">
 
         <!-- 1. MAP / MAIN MENU -->
-        <section id="screen-map" class="w-full max-w-7xl parchment-card rounded-3xl p-6 md:p-8 map-overlay-bg relative">
+        <section id="screen-map" class="w-full max-w-7xl parchment-card" style="padding: 1.5rem;">
             
-            <div class="text-center mb-5">
-                <!-- ĐÃ ĐỔI THÀNH MỞ RƯƠNG -->
-                <h1 class="font-serif-title font-black text-3xl md:text-5xl text-amber-950 uppercase tracking-wide drop-shadow-sm">
+            <div class="text-center" style="margin-bottom: 1.25rem;">
+                <h1 class="font-serif-title uppercase" style="font-size: 2.25rem; font-weight: 900; color: #451a03; letter-spacing: 0.025em;">
                     Mở Rương
                 </h1>
                 
-                <p class="text-base md:text-lg font-bold text-amber-900 mt-2 italic">
+                <p style="font-size: 1.1rem; font-weight: 700; color: #78350f; margin-top: 0.5rem; font-style: italic;">
                     Chọn một chiếc rương để bắt đầu thử thách!
                 </p>
                 
                 <!-- THANH CHỌN NHÓM ĐANG CHƠI -->
-                <div class="mt-4 inline-flex items-center gap-3 bg-amber-950/20 p-2 rounded-2xl border-2 border-amber-900/40">
-                    <span class="text-sm md:text-base font-bold text-amber-950 uppercase ml-3 hidden sm:inline">Lượt chơi:</span>
-                    <button onclick="selectCurrentTeam(1)" id="btn-select-team-1" class="px-4 py-2 rounded-xl text-sm md:text-base font-bold border border-amber-800 bg-amber-900/30 text-amber-950 transition">
+                <div style="margin-top: 1rem; display: inline-flex; align-items: center; gap: 0.75rem; background-color: rgba(69, 26, 3, 0.15); padding: 0.5rem; border-radius: 1rem; border: 2px solid rgba(120, 53, 15, 0.4);">
+                    <span style="font-size: 0.95rem; font-weight: 700; color: #451a03; text-transform: uppercase; margin-left: 0.5rem;">Lượt chơi:</span>
+                    <button onclick="selectCurrentTeam(1)" id="btn-select-team-1" class="btn-team-select">
                         🚩 Nhóm 1
                     </button>
-                    <button onclick="selectCurrentTeam(2)" id="btn-select-team-2" class="px-4 py-2 rounded-xl text-sm md:text-base font-bold border border-amber-800 bg-amber-900/30 text-amber-950 transition">
+                    <button onclick="selectCurrentTeam(2)" id="btn-select-team-2" class="btn-team-select">
                         🚩 Nhóm 2
                     </button>
-                    <button onclick="selectCurrentTeam(3)" id="btn-select-team-3" class="px-4 py-2 rounded-xl text-sm md:text-base font-bold border border-amber-800 bg-amber-900/30 text-amber-950 transition">
+                    <button onclick="selectCurrentTeam(3)" id="btn-select-team-3" class="btn-team-select">
                         🚩 Nhóm 3
                     </button>
                 </div>
             </div>
 
             <!-- 12 RƯƠNG -->
-            <div id="chest-grid" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4 md:gap-6 my-4"></div>
+            <div id="chest-grid" class="grid-chests"></div>
 
-            <div class="mt-6 pt-4 border-t-2 border-amber-900/30 flex justify-between items-center text-sm md:text-base font-bold text-amber-950">
-                <div class="flex items-center gap-3">
-                    <span id="chests-opened-count" class="bg-amber-900 text-amber-100 px-4 py-1 rounded-full font-mono text-base">0 / 12</span>
-                    <span class="text-base">Rương đã được mở</span>
+            <div class="flex justify-between items-center" style="margin-top: 1.5rem; padding-top: 1rem; border-top: 2px solid rgba(120, 53, 15, 0.3); font-weight: 700; color: #451a03;">
+                <div class="flex items-center" style="gap: 0.75rem;">
+                    <span id="chests-opened-count" class="font-steampunk" style="background-color: #78350f; color: #fef3c7; padding: 0.25rem 1rem; border-radius: 9999px; font-size: 1rem;">0 / 12</span>
+                    <span style="font-size: 1rem;">Rương đã được mở</span>
                 </div>
-                <div id="current-turn-hint" class="italic text-amber-900 font-extrabold text-base">
+                <div id="current-turn-hint" style="font-style: italic; color: #78350f; font-weight: 800; font-size: 1rem;">
                     Đang chọn điểm cho: Nhóm 1
                 </div>
             </div>
         </section>
 
         <!-- 2. QUESTION SCREEN -->
-        <section id="screen-question" class="w-full max-w-5xl parchment-card rounded-3xl p-6 md:p-10 relative hidden">
-            <div class="flex justify-between items-center border-b-2 border-amber-900/30 pb-4 mb-6">
-                <span class="bg-amber-900 text-amber-200 font-steampunk px-4 py-1.5 rounded-lg border border-amber-600 text-sm md:text-base font-bold" id="q-number-badge">
+        <section id="screen-question" class="w-full max-w-5xl parchment-card hidden" style="padding: 1.5rem;">
+            <div class="flex justify-between items-center" style="border-bottom: 2px solid rgba(120, 53, 15, 0.3); padding-bottom: 1rem; margin-bottom: 1.5rem;">
+                <span class="font-steampunk" style="background-color: #78350f; color: #fde68a; padding: 0.375rem 1rem; border-radius: 0.5rem; border: 1px solid #d97706; font-size: 0.95rem;" id="q-number-badge">
                     THỬ THÁCH 01 / 12
                 </span>
                 
-                <div class="flex items-center gap-2 bg-amber-950/20 px-3 py-1.5 rounded-xl border border-amber-900/30">
-                    <span class="text-xs md:text-sm font-bold text-amber-950 uppercase hidden md:inline">Cộng điểm:</span>
-                    <button onclick="selectCurrentTeam(1)" id="q-team-1" class="px-3 py-1 rounded-lg text-xs md:text-sm font-bold border border-amber-800">N1</button>
-                    <button onclick="selectCurrentTeam(2)" id="q-team-2" class="px-3 py-1 rounded-lg text-xs md:text-sm font-bold border border-amber-800">N2</button>
-                    <button onclick="selectCurrentTeam(3)" id="q-team-3" class="px-3 py-1 rounded-lg text-xs md:text-sm font-bold border border-amber-800">N3</button>
+                <div class="flex items-center" style="gap: 0.5rem; background-color: rgba(69, 26, 3, 0.15); padding: 0.375rem 0.75rem; border-radius: 0.75rem; border: 1px solid rgba(120, 53, 15, 0.3);">
+                    <span style="font-size: 0.85rem; font-weight: 700; color: #451a03; text-transform: uppercase;">Cộng điểm:</span>
+                    <button onclick="selectCurrentTeam(1)" id="q-team-1" class="btn-team-select" style="padding: 0.25rem 0.5rem;">N1</button>
+                    <button onclick="selectCurrentTeam(2)" id="q-team-2" class="btn-team-select" style="padding: 0.25rem 0.5rem;">N2</button>
+                    <button onclick="selectCurrentTeam(3)" id="q-team-3" class="btn-team-select" style="padding: 0.25rem 0.5rem;">N3</button>
                 </div>
 
-                <button onclick="goToMap()" class="text-amber-950 hover:text-amber-700 font-bold text-sm flex items-center gap-1.5 bg-amber-200/80 px-3.5 py-1.5 rounded-lg border border-amber-800/40">
+                <button onclick="goToMap()" style="color: #451a03; font-weight: 700; font-size: 0.9rem; background-color: rgba(253, 230, 138, 0.8); padding: 0.375rem 0.875rem; border-radius: 0.5rem; border: 1px solid rgba(120, 53, 15, 0.4); cursor: pointer;">
                     🗺 BẢN ĐỒ
                 </button>
             </div>
 
-            <div class="bg-amber-100/80 border-2 border-amber-900/30 rounded-2xl p-5 md:p-8 mb-6 shadow-inner">
-                <h2 id="q-text" class="font-serif-title font-bold text-lg md:text-2xl text-amber-950 leading-relaxed"></h2>
+            <div style="background-color: rgba(254, 243, 199, 0.85); border: 2px solid rgba(120, 53, 15, 0.35); border-radius: 1rem; padding: 1.5rem; margin-bottom: 1.5rem; box-shadow: inset 0 2px 4px 0 rgba(0,0,0,0.06);">
+                <h2 id="q-text" class="vietnamese-question-font" style="font-weight: 700; font-size: 1.3rem; color: #3b1402; line-height: 1.6;"></h2>
             </div>
 
-            <div id="q-options" class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6"></div>
+            <div id="q-options" class="grid-options"></div>
 
-            <div id="q-feedback-container" class="hidden bg-slate-900/95 text-white rounded-2xl p-5 flex flex-col md:flex-row justify-between items-center gap-4 border-2 border-amber-500/50 shadow-2xl">
-                <div class="flex items-center gap-4">
-                    <div id="q-feedback-icon" class="text-4xl">✓</div>
+            <div id="q-feedback-container" class="hidden md-flex-row" style="background-color: rgba(15, 23, 42, 0.95); color: #fff; border-radius: 1rem; padding: 1.25rem; display: flex; flex-direction: column; justify-content: space-between; items-center; gap: 1rem; border: 2px solid rgba(245, 158, 11, 0.5); box-shadow: 0 25px 50px -12px rgba(0,0,0,0.25);">
+                <div class="flex items-center" style="gap: 1rem;">
+                    <div id="q-feedback-icon" style="font-size: 2.25rem;">✓</div>
                     <div>
-                        <h4 id="q-feedback-title" class="font-bold text-lg text-amber-300">CHÍNH XÁC!</h4>
-                        <p id="q-feedback-desc" class="text-sm text-slate-300"></p>
+                        <h4 id="q-feedback-title" style="font-weight: 700; font-size: 1.125rem; color: #fcd34d;">CHÍNH XÁC!</h4>
+                        <p id="q-feedback-desc" style="font-size: 0.875rem; color: #cbd5e1;"></p>
                     </div>
                 </div>
-                <div class="flex gap-3 w-full md:w-auto">
-                    <button id="btn-action-bonus" onclick="goToBonus()" class="btn-steampunk font-bold px-6 py-2.5 rounded-xl w-full md:w-auto text-sm md:text-base hidden">
+                <div class="flex" style="gap: 0.75rem; width: 100%;">
+                    <button id="btn-action-bonus" onclick="goToBonus()" class="btn-steampunk hidden" style="font-weight: 700; padding: 0.625rem 1.5rem; border-radius: 0.75rem; width: 100%; font-size: 0.95rem;">
                         🔓 MỞ RƯƠNG BONUS
                     </button>
-                    <button id="btn-action-map" onclick="goToMap()" class="bg-amber-800 hover:bg-amber-700 text-amber-100 border border-amber-500 font-bold px-5 py-2.5 rounded-xl w-full md:w-auto text-sm md:text-base">
+                    <button id="btn-action-map" onclick="goToMap()" style="background-color: #9a3412; color: #ffedd5; border: 1px solid #f97316; font-weight: 700; padding: 0.625rem 1.25rem; border-radius: 0.75rem; width: 100%; font-size: 0.95rem; cursor: pointer;">
                         🗺 VỀ BẢN ĐỒ
                     </button>
                 </div>
@@ -250,62 +378,62 @@
         </section>
 
         <!-- 3. BONUS WHEEL SCREEN -->
-        <section id="screen-bonus" class="w-full max-w-4xl parchment-card rounded-3xl p-6 md:p-10 relative hidden text-center">
-            <h2 class="font-serif-title font-black text-3xl md:text-4xl text-amber-950 uppercase">
-                🎁 RƯƠNG BONUS - <span id="bonus-team-title" class="text-amber-800">NHÓM 1</span>
+        <section id="screen-bonus" class="w-full max-w-4xl parchment-card text-center hidden" style="padding: 1.5rem;">
+            <h2 class="font-serif-title uppercase" style="font-weight: 900; font-size: 2rem; color: #451a03;">
+                🎁 RƯƠNG BONUS - <span id="bonus-team-title" style="color: #9a3412;">NHÓM 1</span>
             </h2>
-            <p class="text-amber-900 font-bold text-sm md:text-base mt-2 mb-5">Xoay vòng quay may mắn để nhận thêm điểm thưởng!</p>
+            <p style="color: #78350f; font-weight: 700; font-size: 1rem; margin-top: 0.5rem; margin-bottom: 1.25rem;">Xoay vòng quay may mắn để nhận thêm điểm thưởng!</p>
 
-            <div class="relative max-w-sm mx-auto my-3 flex flex-col items-center">
-                <div class="wheel-pointer z-20 relative -mb-4"></div>
-                <canvas id="wheel-canvas" width="340" height="340" class="rounded-full shadow-2xl border-4 border-amber-800 bg-amber-900"></canvas>
-                <button id="btn-spin" onclick="spinWheel()" class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-30 btn-steampunk w-20 h-20 rounded-full font-black text-lg shadow-2xl border-2 border-amber-300 flex items-center justify-center">
+            <div class="flex flex-col items-center" style="position: relative; max-width: 24rem; margin: 0.75rem auto;">
+                <div class="wheel-pointer" style="z-index: 20; position: relative; margin-bottom: -1rem;"></div>
+                <canvas id="wheel-canvas" width="340" height="340" style="border-radius: 9999px; box-shadow: 0 25px 50px -12px rgba(0,0,0,0.5); border: 4px solid #78350f; background-color: #451a03;"></canvas>
+                <button id="btn-spin" onclick="spinWheel()" class="btn-steampunk" style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); z-index: 30; width: 5rem; height: 5rem; border-radius: 9999px; font-weight: 900; font-size: 1.125rem; border: 2px solid #fde68a; display: flex; align-items: center; justify-content: center;">
                     SPIN!
                 </button>
             </div>
 
-            <div id="bonus-result" class="min-h-[50px] my-3 flex items-center justify-center">
-                <p id="bonus-result-text" class="font-serif-title font-bold text-xl md:text-2xl text-amber-950"></p>
+            <div id="bonus-result" style="min-height: 50px; margin: 0.75rem 0; display: flex; align-items: center; justify-content: center;">
+                <p id="bonus-result-text" class="font-serif-title" style="font-weight: 700; font-size: 1.35rem; color: #451a03;"></p>
             </div>
 
-            <div class="mt-3">
-                <button id="btn-bonus-map" onclick="goToMap()" disabled class="bg-amber-900/40 text-amber-950/50 font-bold px-8 py-3 rounded-xl border border-amber-900/30 text-sm md:text-base">
+            <div style="margin-top: 0.75rem;">
+                <button id="btn-bonus-map" onclick="goToMap()" disabled style="background-color: rgba(120, 53, 15, 0.4); color: rgba(69, 26, 3, 0.5); font-weight: 700; padding: 0.75rem 2rem; border-radius: 0.75rem; border: 1px solid rgba(120, 53, 15, 0.3); font-size: 0.95rem;">
                     🗺 QUAY VỀ BẢN ĐỒ
                 </button>
             </div>
         </section>
 
         <!-- 4. GAMEOVER SCREEN -->
-        <section id="screen-gameover" class="w-full max-w-4xl parchment-card rounded-3xl p-8 md:p-10 relative hidden text-center">
-            <div class="text-amber-800 text-6xl mb-3">🏆</div>
-            <h2 class="font-serif-title font-black text-3xl md:text-4xl text-amber-950 uppercase">
+        <section id="screen-gameover" class="w-full max-w-4xl parchment-card text-center hidden" style="padding: 2rem;">
+            <div style="font-size: 3.75rem; margin-bottom: 0.75rem;">🏆</div>
+            <h2 class="font-serif-title uppercase" style="font-weight: 900; font-size: 2rem; color: #451a03;">
                 TỔNG KẾT HÀNH TRÌNH
             </h2>
 
-            <div id="winner-announcement" class="my-6 p-5 bg-amber-950/20 border-2 border-amber-700 rounded-2xl font-serif-title font-bold text-xl md:text-3xl text-amber-950 shadow-lg animate-bounce"></div>
+            <div id="winner-announcement" class="font-serif-title animate-bounce" style="margin: 1.5rem 0; padding: 1.25rem; background-color: rgba(69, 26, 3, 0.2); border: 2px solid #c2410c; border-radius: 1rem; font-weight: 700; font-size: 1.5rem; color: #451a03; box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1);"></div>
 
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-4 my-6 text-left">
-                <div class="bg-amber-950/10 border-2 border-amber-900/30 p-4 rounded-2xl">
-                    <h3 class="font-bold text-amber-900 text-center border-b border-amber-900/20 pb-2 mb-3 text-lg">NHÓM 1</h3>
-                    <p class="text-sm text-amber-950">Điểm câu hỏi: <b id="t1-q" class="text-base">0</b></p>
-                    <p class="text-sm text-amber-950">Điểm Bonus: <b id="t1-b" class="text-base">0</b></p>
-                    <p class="text-base font-black text-amber-900 mt-2">Tổng: <span id="t1-total" class="font-mono text-2xl">0</span></p>
+            <div style="display: grid; grid-template-columns: repeat(1, minmax(0, 1fr)); gap: 1rem; margin: 1.5rem 0; text-align: left;">
+                <div style="background-color: rgba(69, 26, 3, 0.1); border: 2px solid rgba(120, 53, 15, 0.3); padding: 1rem; border-radius: 1rem;">
+                    <h3 style="font-weight: 700; color: #78350f; text-align: center; border-bottom: 1px solid rgba(120, 53, 15, 0.2); padding-bottom: 0.5rem; margin-bottom: 0.75rem; font-size: 1.125rem;">NHÓM 1</h3>
+                    <p style="font-size: 0.875rem; color: #451a03;">Điểm câu hỏi: <b id="t1-q" style="font-size: 1rem;">0</b></p>
+                    <p style="font-size: 0.875rem; color: #451a03;">Điểm Bonus: <b id="t1-b" style="font-size: 1rem;">0</b></p>
+                    <p style="font-size: 1rem; font-weight: 900; color: #78350f; margin-top: 0.5rem;">Tổng: <span id="t1-total" class="font-steampunk" style="font-size: 1.5rem;">0</span></p>
                 </div>
-                <div class="bg-amber-950/10 border-2 border-amber-900/30 p-4 rounded-2xl">
-                    <h3 class="font-bold text-amber-900 text-center border-b border-amber-900/20 pb-2 mb-3 text-lg">NHÓM 2</h3>
-                    <p class="text-sm text-amber-950">Điểm câu hỏi: <b id="t2-q" class="text-base">0</b></p>
-                    <p class="text-sm text-amber-950">Điểm Bonus: <b id="t2-b" class="text-base">0</b></p>
-                    <p class="text-base font-black text-amber-900 mt-2">Tổng: <span id="t2-total" class="font-mono text-2xl">0</span></p>
+                <div style="background-color: rgba(69, 26, 3, 0.1); border: 2px solid rgba(120, 53, 15, 0.3); padding: 1rem; border-radius: 1rem;">
+                    <h3 style="font-weight: 700; color: #78350f; text-align: center; border-bottom: 1px solid rgba(120, 53, 15, 0.2); padding-bottom: 0.5rem; margin-bottom: 0.75rem; font-size: 1.125rem;">NHÓM 2</h3>
+                    <p style="font-size: 0.875rem; color: #451a03;">Điểm câu hỏi: <b id="t2-q" style="font-size: 1rem;">0</b></p>
+                    <p style="font-size: 0.875rem; color: #451a03;">Điểm Bonus: <b id="t2-b" style="font-size: 1rem;">0</b></p>
+                    <p style="font-size: 1rem; font-weight: 900; color: #78350f; margin-top: 0.5rem;">Tổng: <span id="t2-total" class="font-steampunk" style="font-size: 1.5rem;">0</span></p>
                 </div>
-                <div class="bg-amber-950/10 border-2 border-amber-900/30 p-4 rounded-2xl">
-                    <h3 class="font-bold text-amber-900 text-center border-b border-amber-900/20 pb-2 mb-3 text-lg">NHÓM 3</h3>
-                    <p class="text-sm text-amber-950">Điểm câu hỏi: <b id="t3-q" class="text-base">0</b></p>
-                    <p class="text-sm text-amber-950">Điểm Bonus: <b id="t3-b" class="text-base">0</b></p>
-                    <p class="text-base font-black text-amber-900 mt-2">Tổng: <span id="t3-total" class="font-mono text-2xl">0</span></p>
+                <div style="background-color: rgba(69, 26, 3, 0.1); border: 2px solid rgba(120, 53, 15, 0.3); padding: 1rem; border-radius: 1rem;">
+                    <h3 style="font-weight: 700; color: #78350f; text-align: center; border-bottom: 1px solid rgba(120, 53, 15, 0.2); padding-bottom: 0.5rem; margin-bottom: 0.75rem; font-size: 1.125rem;">NHÓM 3</h3>
+                    <p style="font-size: 0.875rem; color: #451a03;">Điểm câu hỏi: <b id="t3-q" style="font-size: 1rem;">0</b></p>
+                    <p style="font-size: 0.875rem; color: #451a03;">Điểm Bonus: <b id="t3-b" style="font-size: 1rem;">0</b></p>
+                    <p style="font-size: 1rem; font-weight: 900; color: #78350f; margin-top: 0.5rem;">Tổng: <span id="t3-total" class="font-steampunk" style="font-size: 1.5rem;">0</span></p>
                 </div>
             </div>
 
-            <button onclick="restartGame()" class="btn-steampunk font-black text-base md:text-lg px-8 py-3 rounded-2xl border-2 border-amber-200 mt-4">
+            <button onclick="restartGame()" class="btn-steampunk" style="font-weight: 900; font-size: 1.125rem; padding: 0.75rem 2rem; border-radius: 1rem; border: 2px solid #fde68a; margin-top: 1rem;">
                 🔄 CHƠI LẠI
             </button>
         </section>
@@ -313,11 +441,11 @@
     </main>
 
     <!-- FOOTER -->
-    <footer class="bg-slate-950 border-t border-amber-900/40 text-amber-500/80 py-3 text-center text-xs md:text-sm relative z-10 font-semibold">
+    <footer style="background-color: #020617; border-top: 1px solid rgba(120, 53, 15, 0.4); color: rgba(245, 158, 11, 0.8); padding: 0.75rem; text-align: center; font-size: 0.875rem; position: relative; z-index: 10; font-weight: 600;">
         Trò Chơi Mở Rương
     </footer>
 
-    <div id="coins-container" class="fixed inset-0 pointer-events-none z-50 overflow-hidden"></div>
+    <div id="coins-container" style="position: fixed; inset: 0; pointer-events: none; z-index: 50; overflow: hidden;"></div>
 
     <script>
         const questionsData = [
@@ -381,10 +509,14 @@
                 gain.gain.setValueAtTime(0.4, now); gain.gain.exponentialRampToValueAtTime(0.01, now + 0.4);
                 osc.connect(gain); gain.connect(ctx.destination); osc.start(now); osc.stop(now + 0.4);
             } else if (type === 'unlock') {
-                const osc = ctx.createOscillator(), gain = ctx.createGain();
-                osc.type = 'triangle'; osc.frequency.setValueAtTime(523.25, now); osc.frequency.setValueAtTime(783.99, now + 0.2);
-                gain.gain.setValueAtTime(0.3, now); gain.gain.exponentialRampToValueAtTime(0.01, now + 0.4);
-                osc.connect(gain); gain.connect(ctx.destination); osc.start(now); osc.stop(now + 0.4);
+                // Tiếng mở rương đặc trưng (Chest Open SFX)
+                const osc1 = ctx.createOscillator(), osc2 = ctx.createOscillator(), gain = ctx.createGain();
+                osc1.type = 'triangle'; osc2.type = 'sine';
+                osc1.frequency.setValueAtTime(261.63, now); osc1.frequency.exponentialRampToValueAtTime(523.25, now + 0.2);
+                osc2.frequency.setValueAtTime(329.63, now + 0.1); osc2.frequency.exponentialRampToValueAtTime(659.25, now + 0.35);
+                gain.gain.setValueAtTime(0.4, now); gain.gain.exponentialRampToValueAtTime(0.01, now + 0.45);
+                osc1.connect(gain); osc2.connect(gain); gain.connect(ctx.destination);
+                osc1.start(now); osc1.stop(now + 0.45); osc2.start(now + 0.1); osc2.stop(now + 0.45);
             } else if (type === 'tick') {
                 const osc = ctx.createOscillator(), gain = ctx.createGain();
                 osc.type = 'square'; osc.frequency.setValueAtTime(400, now);
@@ -441,20 +573,22 @@
                 if (status === 'opened') openedCount++;
 
                 const chestBtn = document.createElement('button');
-                chestBtn.className = `chest-card rounded-2xl p-4 flex flex-col items-center justify-between text-center relative overflow-hidden group ${status === 'opened' ? 'opened' : ''}`;
+                chestBtn.className = `chest-card ${status === 'opened' ? 'opened' : status === 'failed' ? 'failed' : ''}`;
                 chestBtn.onclick = () => openQuestion(i);
 
                 if (status === 'opened' || status === 'failed') chestBtn.disabled = true;
 
                 const numStr = String(i + 1).padStart(2, '0');
-                let icon = `<svg class="w-12 h-12 md:w-16 md:h-16 text-amber-400 group-hover:scale-110 transition" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path></svg>`;
-                if (status === 'opened') icon = `<svg class="w-12 h-12 md:w-16 md:h-16 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M8 11V7a4 4 0 118 0m-4 8v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2z"></path></svg>`;
-                if (status === 'failed') icon = `<svg class="w-12 h-12 md:w-16 md:h-16 text-rose-600/70" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path></svg>`;
+                
+                // SVG Icons tự vẽ offline
+                let icon = `<svg style="width: 3.5rem; height: 3.5rem; color: #fbbf24; transition: transform 0.2s;" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path></svg>`;
+                if (status === 'opened') icon = `<svg style="width: 3.5rem; height: 3.5rem; color: #34d399;" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M8 11V7a4 4 0 118 0m-4 8v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2z"></path></svg>`;
+                if (status === 'failed') icon = `<svg style="width: 3.5rem; height: 3.5rem; color: #f87171;" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path></svg>`;
 
                 chestBtn.innerHTML = `
-                    <div class="text-amber-400 font-steampunk text-xs md:text-sm font-bold tracking-wider">RƯƠNG ${numStr}</div>
-                    <div class="my-2">${icon}</div>
-                    <div class="text-xs md:text-sm font-extrabold ${status === 'opened' ? 'text-emerald-300' : status === 'failed' ? 'text-rose-400' : 'text-amber-200'}">
+                    <div class="font-steampunk" style="color: #fbbf24; font-size: 0.875rem; letter-spacing: 0.05em;">RƯƠNG ${numStr}</div>
+                    <div style="margin: 0.5rem 0;">${icon}</div>
+                    <div style="font-size: 0.875rem; font-weight: 800; color: ${status === 'opened' ? '#6ee7b7' : status === 'failed' ? '#fca5a5' : '#fde68a'}">
                         ${status === 'opened' ? '🔓 ĐÃ MỞ' : status === 'failed' ? '🔒 ĐÃ KHÓA' : 'MỞ RƯƠNG'}
                     </div>
                 `;
@@ -475,6 +609,7 @@
 
         function openQuestion(index) {
             getAudioContext();
+            playSound('unlock'); // Phát tiếng mở rương
             gameState.currentQuestionIndex = index;
             const q = questionsData[index];
 
@@ -487,8 +622,8 @@
 
             q.options.forEach((optText, optIdx) => {
                 const btn = document.createElement('button');
-                btn.className = "btn-option bg-amber-950/20 hover:bg-amber-900/40 text-amber-950 font-bold text-left p-4 md:p-5 rounded-2xl border-2 border-amber-900/30 transition text-base md:text-lg flex items-start gap-3 shadow";
-                btn.innerHTML = `<span class="font-extrabold text-amber-900 shrink-0">${optText.substring(0, 3)}</span> <span>${optText.substring(3)}</span>`;
+                btn.className = "btn-option vietnamese-question-font";
+                btn.innerHTML = `<span style="font-weight: 900; color: #78350f; flex-shrink: 0; font-size: 1.1rem;">${optText.substring(0, 3)}</span> <span style="line-height: 1.5;">${optText.substring(3)}</span>`;
                 btn.onclick = () => selectAnswer(optIdx, btn);
                 optionsContainer.appendChild(btn);
             });
@@ -515,7 +650,9 @@
 
             if (isCorrect) {
                 playSound('correct');
-                clickedBtn.classList.add('bg-emerald-700', 'text-white', 'border-emerald-400');
+                clickedBtn.style.backgroundColor = '#047857';
+                clickedBtn.style.color = '#ffffff';
+                clickedBtn.style.borderColor = '#34d399';
 
                 gameState.teams[team].score += 100;
                 gameState.teams[team].qScore += 100;
@@ -523,24 +660,27 @@
                 updateScoreDisplay();
 
                 feedbackTitle.textContent = `NHÓM ${team} CHÍNH XÁC! (+100 ĐIỂM)`;
-                feedbackTitle.className = 'font-bold text-emerald-300 text-xl';
+                feedbackTitle.style.color = '#6ee7b7';
                 feedbackDesc.textContent = `Điểm đã được cộng cho Nhóm ${team}. Hãy xoay vòng quay để nhận Bonus!`;
                 btnBonus.classList.remove('hidden');
             } else {
                 playSound('wrong');
-                clickedBtn.classList.add('bg-rose-800', 'text-white', 'border-rose-400');
-                allOptionBtns[q.correct].classList.add('bg-emerald-800/80', 'text-white');
+                clickedBtn.style.backgroundColor = '#9f1239';
+                clickedBtn.style.color = '#ffffff';
+                clickedBtn.style.borderColor = '#f87171';
+                
+                allOptionBtns[q.correct].style.backgroundColor = '#065f46';
+                allOptionBtns[q.correct].style.color = '#ffffff';
 
                 gameState.chestStates[index] = 'failed';
 
                 feedbackTitle.textContent = 'CHƯA CHÍNH XÁC!';
-                feedbackTitle.className = 'font-bold text-rose-300 text-xl';
+                feedbackTitle.style.color = '#fca5a5';
                 feedbackDesc.textContent = 'Rương đã bị khóa. Nhường lượt cho các câu tiếp theo!';
                 btnBonus.classList.add('hidden');
             }
         }
 
-        /* BONUS WHEEL */
         const bonusValues = [50, 100, 150, 200, 0];
         const wheelColors = ['#b8860b', '#7a1c1c', '#101c2e', '#2d5a27', '#8c6211'];
         let wheelAngle = 0, isSpinning = false;
@@ -568,7 +708,7 @@
                 ctx.translate(radius, radius);
                 ctx.rotate(angle + sliceAngle / 2);
                 ctx.textAlign = 'right'; ctx.fillStyle = '#ffffff';
-                ctx.font = 'bold 22px Be Vietnam Pro, sans-serif';
+                ctx.font = 'bold 22px system-ui, sans-serif';
                 ctx.fillText(`+${bonusValues[i]}`, radius - 25, 8);
                 ctx.restore();
             }
@@ -586,7 +726,9 @@
             
             const btnMap = document.getElementById('btn-bonus-map');
             btnMap.disabled = true;
-            btnMap.className = "bg-amber-900/40 text-amber-950/50 font-bold px-8 py-3 rounded-xl border border-amber-900/30 text-sm md:text-base";
+            btnMap.style.backgroundColor = "rgba(120, 53, 15, 0.4)";
+            btnMap.style.color = "rgba(69, 26, 3, 0.5)";
+            btnMap.style.cursor = "default";
             setTimeout(drawWheel, 50);
         }
 
@@ -640,7 +782,10 @@
 
                     const btnMap = document.getElementById('btn-bonus-map');
                     btnMap.disabled = false;
-                    btnMap.className = "btn-steampunk font-extrabold px-10 py-3 rounded-xl text-base cursor-pointer";
+                    btnMap.className = "btn-steampunk";
+                    btnMap.style.backgroundColor = "";
+                    btnMap.style.color = "";
+                    btnMap.style.cursor = "pointer";
                 }
             }
             requestAnimationFrame(animateWheel);
@@ -651,7 +796,10 @@
             container.innerHTML = '';
             for (let i = 0; i < 30; i++) {
                 const coin = document.createElement('div');
-                coin.className = 'coin-particle text-amber-400 font-bold text-3xl';
+                coin.className = 'coin-particle';
+                coin.style.color = '#fbbf24';
+                coin.style.fontWeight = 'bold';
+                coin.style.fontSize = '1.875rem';
                 coin.textContent = '🪙';
                 coin.style.left = Math.random() * 100 + 'vw';
                 coin.style.animationDuration = (1.5 + Math.random() * 1.5) + 's';
