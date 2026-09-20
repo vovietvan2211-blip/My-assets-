@@ -393,7 +393,7 @@
             </div>
 
             <div id="bonus-result" style="min-height: 50px; margin: 0.75rem 0; display: flex; align-items: center; justify-content: center;">
-                <p id="bonus-result-text" class="font-serif-title" style="font-weight: 700; font-size: 1.35rem; color: #451a03;"></p>
+                <p id="bonus-result-text" class="vietnamese-question-font" style="font-weight: 700; font-size: 1.35rem; color: #451a03;"></p>
             </div>
 
             <div style="margin-top: 0.75rem;">
@@ -403,33 +403,33 @@
             </div>
         </section>
 
-        <!-- 4. GAMEOVER SCREEN -->
-        <section id="screen-gameover" class="w-full max-w-4xl parchment-card text-center hidden" style="padding: 2rem;">
+        <!-- 4. GAMEOVER SCREEN (ĐÃ ĐƯỢC CẬP NHẬT FONT TIẾNG VIỆT) -->
+        <section id="screen-gameover" class="w-full max-w-4xl parchment-card text-center vietnamese-question-font hidden" style="padding: 2rem;">
             <div style="font-size: 3.75rem; margin-bottom: 0.75rem;">🏆</div>
-            <h2 class="font-serif-title uppercase" style="font-weight: 900; font-size: 2rem; color: #451a03;">
+            <h2 class="uppercase" style="font-weight: 900; font-size: 2rem; color: #451a03; letter-spacing: 0.025em;">
                 TỔNG KẾT HÀNH TRÌNH
             </h2>
 
-            <div id="winner-announcement" class="font-serif-title animate-bounce" style="margin: 1.5rem 0; padding: 1.25rem; background-color: rgba(69, 26, 3, 0.2); border: 2px solid #c2410c; border-radius: 1rem; font-weight: 700; font-size: 1.5rem; color: #451a03; box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1);"></div>
+            <div id="winner-announcement" class="animate-bounce" style="margin: 1.5rem 0; padding: 1.25rem; background-color: rgba(69, 26, 3, 0.2); border: 2px solid #c2410c; border-radius: 1rem; font-weight: 700; font-size: 1.4rem; color: #451a03; box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1); line-height: 1.5;"></div>
 
             <div style="display: grid; grid-template-columns: repeat(1, minmax(0, 1fr)); gap: 1rem; margin: 1.5rem 0; text-align: left;">
                 <div style="background-color: rgba(69, 26, 3, 0.1); border: 2px solid rgba(120, 53, 15, 0.3); padding: 1rem; border-radius: 1rem;">
                     <h3 style="font-weight: 700; color: #78350f; text-align: center; border-bottom: 1px solid rgba(120, 53, 15, 0.2); padding-bottom: 0.5rem; margin-bottom: 0.75rem; font-size: 1.125rem;">NHÓM 1</h3>
-                    <p style="font-size: 0.875rem; color: #451a03;">Điểm câu hỏi: <b id="t1-q" style="font-size: 1rem;">0</b></p>
-                    <p style="font-size: 0.875rem; color: #451a03;">Điểm Bonus: <b id="t1-b" style="font-size: 1rem;">0</b></p>
-                    <p style="font-size: 1rem; font-weight: 900; color: #78350f; margin-top: 0.5rem;">Tổng: <span id="t1-total" class="font-steampunk" style="font-size: 1.5rem;">0</span></p>
+                    <p style="font-size: 0.95rem; color: #451a03;">Điểm câu hỏi: <b id="t1-q" style="font-size: 1.05rem;">0</b></p>
+                    <p style="font-size: 0.95rem; color: #451a03;">Điểm Bonus: <b id="t1-b" style="font-size: 1.05rem;">0</b></p>
+                    <p style="font-size: 1.05rem; font-weight: 900; color: #78350f; margin-top: 0.5rem;">Tổng: <span id="t1-total" class="font-steampunk" style="font-size: 1.5rem;">0</span></p>
                 </div>
                 <div style="background-color: rgba(69, 26, 3, 0.1); border: 2px solid rgba(120, 53, 15, 0.3); padding: 1rem; border-radius: 1rem;">
                     <h3 style="font-weight: 700; color: #78350f; text-align: center; border-bottom: 1px solid rgba(120, 53, 15, 0.2); padding-bottom: 0.5rem; margin-bottom: 0.75rem; font-size: 1.125rem;">NHÓM 2</h3>
-                    <p style="font-size: 0.875rem; color: #451a03;">Điểm câu hỏi: <b id="t2-q" style="font-size: 1rem;">0</b></p>
-                    <p style="font-size: 0.875rem; color: #451a03;">Điểm Bonus: <b id="t2-b" style="font-size: 1rem;">0</b></p>
-                    <p style="font-size: 1rem; font-weight: 900; color: #78350f; margin-top: 0.5rem;">Tổng: <span id="t2-total" class="font-steampunk" style="font-size: 1.5rem;">0</span></p>
+                    <p style="font-size: 0.95rem; color: #451a03;">Điểm câu hỏi: <b id="t2-q" style="font-size: 1.05rem;">0</b></p>
+                    <p style="font-size: 0.95rem; color: #451a03;">Điểm Bonus: <b id="t2-b" style="font-size: 1.05rem;">0</b></p>
+                    <p style="font-size: 1.05rem; font-weight: 900; color: #78350f; margin-top: 0.5rem;">Tổng: <span id="t2-total" class="font-steampunk" style="font-size: 1.5rem;">0</span></p>
                 </div>
                 <div style="background-color: rgba(69, 26, 3, 0.1); border: 2px solid rgba(120, 53, 15, 0.3); padding: 1rem; border-radius: 1rem;">
                     <h3 style="font-weight: 700; color: #78350f; text-align: center; border-bottom: 1px solid rgba(120, 53, 15, 0.2); padding-bottom: 0.5rem; margin-bottom: 0.75rem; font-size: 1.125rem;">NHÓM 3</h3>
-                    <p style="font-size: 0.875rem; color: #451a03;">Điểm câu hỏi: <b id="t3-q" style="font-size: 1rem;">0</b></p>
-                    <p style="font-size: 0.875rem; color: #451a03;">Điểm Bonus: <b id="t3-b" style="font-size: 1rem;">0</b></p>
-                    <p style="font-size: 1rem; font-weight: 900; color: #78350f; margin-top: 0.5rem;">Tổng: <span id="t3-total" class="font-steampunk" style="font-size: 1.5rem;">0</span></p>
+                    <p style="font-size: 0.95rem; color: #451a03;">Điểm câu hỏi: <b id="t3-q" style="font-size: 1.05rem;">0</b></p>
+                    <p style="font-size: 0.95rem; color: #451a03;">Điểm Bonus: <b id="t3-b" style="font-size: 1.05rem;">0</b></p>
+                    <p style="font-size: 1.05rem; font-weight: 900; color: #78350f; margin-top: 0.5rem;">Tổng: <span id="t3-total" class="font-steampunk" style="font-size: 1.5rem;">0</span></p>
                 </div>
             </div>
 
